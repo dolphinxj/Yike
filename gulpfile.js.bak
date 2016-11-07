@@ -1,0 +1,63 @@
+var gulp = require('gulp');
+var less = require('gulp-less');
+var cssmin = require('gulp-cssmin');
+var imagemin = require('gulp-imagemin');
+var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
+var htmlmin = require('gulp-htmlmin');
+var rev = require('gulp-rev');
+var revCollector = require('gulp-rev-collector');
+var useref = require('gulp-useref');
+var gulpif = require('gulp-if');
+
+
+gulp.task('css',function(){
+	gulp.src('public/less/main.less')
+		.pipe(less())
+		.pipe(cssmin())
+		.pipe(rev())
+		.pipe(gulp.dest('./release'))
+		.pipe(rev.manifest())
+		.pipe(gulp.dest('./release/rev'))
+})
+
+gulp.task('image',function(){
+	gulp.src(['./public/images/**/*','./uploads/*'],{base:'./'})
+		.pipe(imagemin())
+		.pipe(gulp.dest('./release'))
+})
+
+gulp.task('js',function(){
+	gulp.src('./scripts/*.js',{base:'./'})
+		.pipe(uglify())
+		.pipe(concat('./scripts/all.js'))
+		.pipe(gulp.dest('./release'))
+})
+
+gulp.task('html',function(){
+	gulp.src(['./index.html', './views/*.html'], {base: './'})
+		.pipe(htmlmin({collapseWhitespace: true, 
+			removeComments: true, minifyJS: true,
+			minifyJS:true}))
+		.pipe(gulp.dest('./release'));
+})
+
+gulp.task('rev',function(){
+	gulp.src(['./release/rev/*.json','./release/index.html'])
+		.pipe(revCollector())
+		.pipe(gulp.dest('./release'))
+})
+
+//整体操作
+gulp.task('useref',function(){
+	gulp.src('./index.html')
+		.pipe(useref())
+		.pipe(gulpif('*.js',uglify()))
+		.pipe(gulp.dest('./release'))
+})
+
+
+
+
+
+
