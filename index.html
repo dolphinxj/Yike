@@ -22,7 +22,7 @@
                     <span>登录</span>
                 </dt>
                 
-				<dd ng-class="active" ng-repeat="nav in navs">
+				<dd ng-class="{active: $index == index}" ng-repeat="nav in navs">
 					<a href="{{nav.link}}" ng-click="toggle()" class="{{nav.icon}}">
 						<span>{{nav.text}}</span>
 					</a>
@@ -42,6 +42,7 @@
             </div>
             <!-- 主体 -->
             <div ng-class="{body:true, collapse:collapsed}" >
+                <div class='wating' ng-hide='loaded' loading src='./public/images/loading.gif'></div>
                 <div ng-view></div>
             </div>
         </div>
@@ -50,6 +51,7 @@
     <script src='./bower_components/angular-route/angular-route.js'></script>
     <script src='./scripts/app.js'></script>
     <script src='./scripts/Controllers.js'></script>
+    <script src='./scripts/directives.js'></script>
 
 
     <!-- <script>

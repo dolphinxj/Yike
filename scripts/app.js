@@ -1,4 +1,4 @@
-var Yike = angular.module('Yike', ['ngRoute', 'Controllers']);
+var Yike = angular.module('Yike', ['ngRoute', 'Controllers', 'Directives']);
 Yike.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/today', {
         templateUrl: './views/body.html',
@@ -7,6 +7,10 @@ Yike.config(['$routeProvider', function($routeProvider) {
     .when('/older',{
     	templateUrl:'./views/older.html',
         controller: 'OlderController'
+    })
+    .when('/hot',{
+        templateUrl:'./views/author.html',
+        controller: 'HotController'
     })
     .otherwise({
         redirectTo: '/today'
